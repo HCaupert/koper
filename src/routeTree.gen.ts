@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EntryTitleRouteImport } from './routes/entry.title'
 import { Route as DemoConvexRouteImport } from './routes/demo.convex'
+import { Route as RoomIdChar123EntryIdChar125RouteImport } from './routes/$roomId.{-$entryId}'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntryTitleRoute = EntryTitleRouteImport.update({
+  id: '/entry/title',
+  path: '/entry/title',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoConvexRoute = DemoConvexRouteImport.update({
@@ -22,31 +29,50 @@ const DemoConvexRoute = DemoConvexRouteImport.update({
   path: '/demo/convex',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoomIdChar123EntryIdChar125Route =
+  RoomIdChar123EntryIdChar125RouteImport.update({
+    id: '/$roomId/{-$entryId}',
+    path: '/$roomId/{-$entryId}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$roomId/{-$entryId}': typeof RoomIdChar123EntryIdChar125Route
   '/demo/convex': typeof DemoConvexRoute
+  '/entry/title': typeof EntryTitleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$roomId/{-$entryId}': typeof RoomIdChar123EntryIdChar125Route
   '/demo/convex': typeof DemoConvexRoute
+  '/entry/title': typeof EntryTitleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$roomId/{-$entryId}': typeof RoomIdChar123EntryIdChar125Route
   '/demo/convex': typeof DemoConvexRoute
+  '/entry/title': typeof EntryTitleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/convex'
+  fullPaths: '/' | '/$roomId/{-$entryId}' | '/demo/convex' | '/entry/title'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/convex'
-  id: '__root__' | '/' | '/demo/convex'
+  to: '/' | '/$roomId/{-$entryId}' | '/demo/convex' | '/entry/title'
+  id:
+    | '__root__'
+    | '/'
+    | '/$roomId/{-$entryId}'
+    | '/demo/convex'
+    | '/entry/title'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RoomIdChar123EntryIdChar125Route: typeof RoomIdChar123EntryIdChar125Route
   DemoConvexRoute: typeof DemoConvexRoute
+  EntryTitleRoute: typeof EntryTitleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +84,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/entry/title': {
+      id: '/entry/title'
+      path: '/entry/title'
+      fullPath: '/entry/title'
+      preLoaderRoute: typeof EntryTitleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/convex': {
       id: '/demo/convex'
       path: '/demo/convex'
@@ -65,12 +98,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoConvexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$roomId/{-$entryId}': {
+      id: '/$roomId/{-$entryId}'
+      path: '/$roomId/{-$entryId}'
+      fullPath: '/$roomId/{-$entryId}'
+      preLoaderRoute: typeof RoomIdChar123EntryIdChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RoomIdChar123EntryIdChar125Route: RoomIdChar123EntryIdChar125Route,
   DemoConvexRoute: DemoConvexRoute,
+  EntryTitleRoute: EntryTitleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

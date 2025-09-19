@@ -1,39 +1,47 @@
-import { createFileRoute } from '@tanstack/react-router'
-import logo from '../logo.svg'
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { type FormEvent, useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "@/lib/api.ts";
+import { H1 } from "@/components/typography.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
-export const Route = createFileRoute('/')({
-  component: App,
-})
+export const Route = createFileRoute("/")({
+  component: HomePage,
+});
 
-function App() {
+function HomePage() {
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+
+  const createRoom = useMutation(api.room.create);
+
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { roomId } = await createRoom({ name });
+    return navigate({
+      to: "/$roomId/{-$entryId}",
+      params: { roomId },
+    });
+  };
+
   return (
-    <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-        <img
-          src={logo}
-          className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-          alt="logo"
+    <main className="flex h-dvh w-full flex-col items-center justify-center gap-6">
+      <H1>What are we planning today?</H1>
+      <form
+        onSubmit={(e) => onSubmit(e)}
+        className="flex w-96 max-w-[80%] flex-col gap-2"
+      >
+        <Input
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
-        </p>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
-      </header>
-    </div>
-  )
+        <Button type="submit" size="lg">
+          Plan!
+        </Button>
+      </form>
+    </main>
+  );
 }
