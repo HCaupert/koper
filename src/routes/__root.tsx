@@ -5,22 +5,24 @@ import { TanstackDevtools } from "@tanstack/react-devtools";
 import ConvexProvider from "../integrations/convex/provider";
 
 export const Route = createRootRoute({
-  component: () => (
-    <>
-      <ConvexProvider>
-        <Outlet />
-        <TanstackDevtools
-          config={{
-            position: "bottom-left",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
-      </ConvexProvider>
-    </>
-  ),
+  component: () => {
+    return (
+      <>
+        <ConvexProvider>
+          <Outlet />
+          <TanstackDevtools
+            config={{
+              position: "bottom-left",
+            }}
+            plugins={[
+              {
+                name: "Tanstack Router",
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
+        </ConvexProvider>
+      </>
+    );
+  },
 });

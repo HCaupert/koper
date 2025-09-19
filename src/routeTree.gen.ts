@@ -9,19 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UserRouteImport } from './routes/user'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as EntryTitleRouteImport } from './routes/entry.title'
 import { Route as DemoConvexRouteImport } from './routes/demo.convex'
 import { Route as RoomIdChar123EntryIdChar125RouteImport } from './routes/$roomId.{-$entryId}'
 
+const UserRoute = UserRouteImport.update({
+  id: '/user',
+  path: '/user',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EntryTitleRoute = EntryTitleRouteImport.update({
-  id: '/entry/title',
-  path: '/entry/title',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoConvexRoute = DemoConvexRouteImport.update({
@@ -38,57 +38,52 @@ const RoomIdChar123EntryIdChar125Route =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/user': typeof UserRoute
   '/$roomId/{-$entryId}': typeof RoomIdChar123EntryIdChar125Route
   '/demo/convex': typeof DemoConvexRoute
-  '/entry/title': typeof EntryTitleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/user': typeof UserRoute
   '/$roomId/{-$entryId}': typeof RoomIdChar123EntryIdChar125Route
   '/demo/convex': typeof DemoConvexRoute
-  '/entry/title': typeof EntryTitleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/user': typeof UserRoute
   '/$roomId/{-$entryId}': typeof RoomIdChar123EntryIdChar125Route
   '/demo/convex': typeof DemoConvexRoute
-  '/entry/title': typeof EntryTitleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$roomId/{-$entryId}' | '/demo/convex' | '/entry/title'
+  fullPaths: '/' | '/user' | '/$roomId/{-$entryId}' | '/demo/convex'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$roomId/{-$entryId}' | '/demo/convex' | '/entry/title'
-  id:
-    | '__root__'
-    | '/'
-    | '/$roomId/{-$entryId}'
-    | '/demo/convex'
-    | '/entry/title'
+  to: '/' | '/user' | '/$roomId/{-$entryId}' | '/demo/convex'
+  id: '__root__' | '/' | '/user' | '/$roomId/{-$entryId}' | '/demo/convex'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  UserRoute: typeof UserRoute
   RoomIdChar123EntryIdChar125Route: typeof RoomIdChar123EntryIdChar125Route
   DemoConvexRoute: typeof DemoConvexRoute
-  EntryTitleRoute: typeof EntryTitleRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/user': {
+      id: '/user'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof UserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/entry/title': {
-      id: '/entry/title'
-      path: '/entry/title'
-      fullPath: '/entry/title'
-      preLoaderRoute: typeof EntryTitleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/convex': {
@@ -110,9 +105,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  UserRoute: UserRoute,
   RoomIdChar123EntryIdChar125Route: RoomIdChar123EntryIdChar125Route,
   DemoConvexRoute: DemoConvexRoute,
-  EntryTitleRoute: EntryTitleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

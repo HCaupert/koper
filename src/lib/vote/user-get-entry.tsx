@@ -9,7 +9,7 @@ export function useGetEntry({
   roomId: string;
   entryId?: string;
 }) {
-  const [user] = useUser();
+  const user = useUser();
 
   const entry = useQuery(api.entry.get, {
     entryId: entryId as Id<"entry">,

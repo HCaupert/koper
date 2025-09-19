@@ -53,7 +53,7 @@ function VoteToggle({
 }
 
 function useVote(entryId: Id<"entry">) {
-  const [user] = useUser();
+  const user = useUser();
   const mutate = useMutation(api.entry.vote);
 
   return (value: number | string) =>
