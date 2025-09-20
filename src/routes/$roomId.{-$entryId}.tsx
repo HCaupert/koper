@@ -20,9 +20,9 @@ function EntryId() {
   if (!entry) return null;
 
   return (
-    <main className="flex w-full max-w-full flex-col gap-10 *:p-4 md:grid md:grid-cols-5 md:*:not-first:p-10">
-      <div className="hidden md:block" />
-      <div className="flex max-h-dvh min-h-dvh flex-col items-start justify-between md:col-span-3">
+    <main className="flex w-full max-w-full flex-col gap-10 *:p-4 lg:grid lg:grid-cols-5 lg:*:not-first:p-10">
+      <div className="hidden lg:block" />
+      <div className="flex max-h-dvh min-h-dvh flex-col items-start justify-between lg:col-span-3">
         <div className="w-full">
           <Link
             to="/$roomId/{-$entryId}"
@@ -32,7 +32,11 @@ function EntryId() {
               {entry.room.name}
             </H2>
           </Link>
-          <EntryTitle entryId={entry._id} entryTitle={entry.title} />
+          <EntryTitle
+            key={entry._id}
+            entryId={entry._id}
+            entryTitle={entry.title}
+          />
         </div>
 
         <VotesSection entry={entry} />

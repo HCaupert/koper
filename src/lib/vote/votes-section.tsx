@@ -48,7 +48,7 @@ export function Vote({ vote: { value, _id, userName } }: { vote: Vote }) {
           !hidden && "duration-1000",
         )}
       >
-        <div className="bg-background flex h-full w-full items-center justify-center rounded border backface-hidden">
+        <div className="bg-card flex h-full w-full items-center justify-center rounded border backface-hidden">
           {value}
         </div>
       </div>
