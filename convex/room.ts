@@ -15,5 +15,5 @@ export const create = mutation({
 });
 
 export const list = query({
-  handler: (ctx, args) => ctx.db.query("room").order("desc").collect(),
+  handler: (ctx) => ctx.db.query("room").order("desc").collect(),
 });
