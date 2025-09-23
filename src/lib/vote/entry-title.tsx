@@ -13,7 +13,6 @@ export function EntryTitle({
   const [localTitle, setLocalTitle] = useDebouncedServerSync(
     entryTitle,
     (title) => updateEntry({ title }),
-    500,
   );
 
   return (
@@ -30,7 +29,7 @@ export function EntryTitle({
 export function useDebouncedServerSync<T>(
   incomingValue: T,
   onSubmit: (value: T) => Promise<any>,
-  delay = 500,
+  delay = 1000,
 ) {
   const [localValue, setLocalValue] = useState<T>(incomingValue);
   const timeout = useRef<number>(undefined);
