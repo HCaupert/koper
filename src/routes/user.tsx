@@ -42,7 +42,7 @@ function UserRoute() {
           onChange={(e) => setName(e.target.value)}
         />
         <Button type="submit" size="lg">
-          Let's get started!'
+          Let's get started!
         </Button>
       </form>
     </main>
