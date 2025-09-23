@@ -35,6 +35,7 @@ function HomePage() {
       >
         <Input
           id="name"
+          autoFocus
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

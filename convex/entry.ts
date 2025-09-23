@@ -55,7 +55,6 @@ export const update = mutation({
     ),
   },
   handler: async (ctx, args) => {
-    console.log(args.update);
     await ctx.db.patch(args.entryId, args.update);
   },
 });

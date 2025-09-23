@@ -1,7 +1,6 @@
 import type { Id } from "@/lib/api";
 import { useUpdateEntry } from "@/lib/vote/use-update-entry";
-import { useState, useEffect } from "react";
-import { useDebounce } from "@uidotdev/usehooks";
+import { useState, useRef, useEffect } from "react";
 
 export function EntryTitle({
   entryId,
@@ -10,15 +9,12 @@ export function EntryTitle({
   entryId: Id<"entry">;
   entryTitle: string;
 }) {
-  const [localTitle, setLocalTitle] = useState(entryTitle);
   const updateEntry = useUpdateEntry(entryId);
-  const debouncedTitle = useDebounce(localTitle, 500)
-
-  useEffect(() => {
-    if (debouncedTitle !== entryTitle) {
-      updateEntry({ title: debouncedTitle });
-    }
-  }, [debouncedTitle]);
+  const [localTitle, setLocalTitle] = useDebouncedServerSync(
+    entryTitle,
+    (title) => updateEntry({ title }),
+    500,
+  );
 
   return (
     <input
@@ -29,4 +25,32 @@ export function EntryTitle({
       onChange={(e) => setLocalTitle(e.target.value)}
     />
   );
+}
+
+export function useDebouncedServerSync<T>(
+  incomingValue: T,
+  onSubmit: (value: T) => Promise<any>,
+  delay = 500,
+) {
+  const [localValue, setLocalValue] = useState<T>(incomingValue);
+  const timeout = useRef<number>(undefined);
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    if (!isDirty) {
+      setLocalValue(incomingValue);
+    }
+  }, [incomingValue, isDirty]);
+
+  const set = (value: T) => {
+    setLocalValue(value);
+    setIsDirty(true)
+    clearTimeout(timeout.current);
+    timeout.current = setTimeout(async () => {
+      await onSubmit(value);
+      setIsDirty(false);
+    }, delay);
+  };
+
+  return [localValue, set] as const;
 }
