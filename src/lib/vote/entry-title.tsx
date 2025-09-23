@@ -18,7 +18,7 @@ export function EntryTitle({
     if (debouncedTitle !== entryTitle) {
       updateEntry({ title: debouncedTitle });
     }
-  }, [debouncedTitle, entryTitle]);
+  }, [debouncedTitle]);
 
   return (
     <input
